@@ -8,43 +8,63 @@
           <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
           <link rel="stylesheet" href="../static/node_1.css">
         </head>
-        <div><input type="checkbox" class='toggle' id='box4000' checked data-toggle="toggle"></div>
-        <div class='status' id='toggledbox4000'>On</div>
-    <div class="blue", id="circle0"></div>
+        <div><input type="checkbox" class='toggle' id='box5000' checked data-toggle="toggle"></div>
+    <div class="red", id="circle5002" style="margin-bottom:20px;"></div>
+        <div><input type="checkbox" class='toggle' id='box5001' checked data-toggle="toggle"></div>
+    <div class="red", id="circle5003" style="margin-bottom:20px;"></div>
+
     </body>
     <script>
     $(document).ready(function() {
-        var port4000 = 'On'
-        $('#box4000').change(function() {
-          var status = document.getElementById('toggledbox4000').innerHTML
-          if (status == 'On') {
-            $('#toggledbox4000').html('Off');
-          }
-          else {
-            $('#toggledbox4000').html('On');
-          }
-          $.ajax({
-                url: "/get_toggled_status",
-                type: "GET",
-                data: {status: status, port: 4000},
-            });
-          $.ajax({
+        var interval = 1000; 
+        function get_status() {
+            $.ajax({
             type: "GET",
             url: "http://localhost:5000/access",
             success: function(response) {
                 console.log(response);
                 response = JSON.parse(response);
                 console.log(response);
-                if (Object.keys(response).indexOf("actuator1") >= 0){
-                    if (response["actuator1"] == 1) {
-                        $("#circle0").attr("class", "black");
+                if (Object.keys(response).indexOf("a5002") >= 0){
+                    if (response["a5002"] == 1) {
+                        $("#circle5002").attr("class", "black");
                     }
                     else {
-                        $("#circle0").attr("class", "blue");
+                        $("#circle5002").attr("class", "red");
                     }
                 }
-          }
+            
+                if (Object.keys(response).indexOf("a5003") >= 0){
+                    if (response["a5003"] == 1) {
+                        $("#circle5003").attr("class", "black");
+                    }
+                    else {
+                        $("#circle5003").attr("class", "red");
+                    }
+                }
+            
+            },
+            complete: function(response) {
+                setTimeout(get_status, interval);
+            }
         });
+        }
+        setTimeout(get_status, interval);
+        $('#box5000').change(function() {
+          var status = $('#box5000').prop("checked");
+          $.ajax({
+                url: "/get_toggled_status",
+                type: "GET",
+                data: {status: status, port: 5000},
+            });
+        });
+        $('#box5001').change(function() {
+          var status = $('#box5001').prop("checked");
+          $.ajax({
+                url: "/get_toggled_status",
+                type: "GET",
+                data: {status: status, port: 5001},
+            });
         });
       });
     </script>
