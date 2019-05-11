@@ -12,7 +12,8 @@ def hello():
 @app.route('/send', methods=['POST'])
 def send():
     # Parse POST data
-    # data = requests.form
+    data = json.loads(request.data.decode("utf-8"))
+    ow_params = data['ow_params']
     # print("Data received: ")
     # print(data)
 
@@ -34,7 +35,7 @@ def send():
     url = 'http://' + APIHOST + ':8888' + '/api/v1/namespaces/' + NAMESPACE + '/actions/' + ACTION
 
     # Some params
-    PARAMS = {}
+    PARAMS = ow_params
     BLOCKING = 'true'
     RESULT = 'true'
 

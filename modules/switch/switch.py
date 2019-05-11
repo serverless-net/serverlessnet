@@ -12,7 +12,7 @@ if len(sys.argv) != 2:
     raise Exception('Invalid number of command line arguments. 1 expected, but ' + str(len(sys.argv) - 1) + ' given.')
 
 target = int(sys.argv[1])
-relayerPort = 4997
+relayerPort = 4999
 
 @app.route('/', methods=['GET'])
 def hello():

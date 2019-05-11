@@ -27,11 +27,11 @@ if hostCount < 1:
 net = Containernet(controller=Controller)
 info('*** Adding controller\n')
 net.addController('c0')
-info('*** Adding docker containers using ubuntu:trusty images\n')
+info('*** Adding docker containers using serverlessnet images\n')
 
 # Add relayer
 r0 = net.addDocker('r0',
-                   dimage="lsk567/lambda_relayer",
+                   dimage="serverlessnet/relayer",
                    ports=[5000],
                    port_bindings={5000:4999},
                    dcmd="python -u relayer.py",
@@ -41,14 +41,14 @@ nodes = {'switch': [],
         'actuator': []}
 for i in range(hostCount):
   nodes['switch'].append(net.addDocker('sw' + str(i),
-                        dimage='lsk567/lambda_switch',
+                        dimage='serverlessnet/switch',
                         ports=[5000], # docker host ports to be opened
                         port_bindings={5000: (5000 + i)}, # { docker host port : machine port }
                         dcmd='python -u switch.py ' + str(5000 + hostCount + i), # pass in target actuator's port
                         publish_all_ports=True))
                   
   nodes['actuator'].append(net.addDocker('a' + str(i),
-                        dimage='lsk567/lambda_actuator',
+                        dimage='serverlessnet/actuator',
                         ports=[5000], # docker host ports to be opened
                         port_bindings={5000: (5000 + hostCount + i)}, # { docker host port : machine port }
                         dcmd='python -u actuator.py',
