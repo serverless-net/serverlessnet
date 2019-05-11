@@ -7,6 +7,17 @@ DATABASE = './actuator_states.db'
 
 app = Flask(__name__)
 
+# read in json file for database initialization
+with open('sample_config.json') as json_file:
+    with sqlite3.connect(DATABASE) as db:
+        cur = db.cursor()
+        cur.execute('CREATE TABLE IF NOT EXISTS current_states (actuator PRIMARY KEY, state text)')
+        data = json.load(json_file)
+        for key in data.keys():
+            if "a" in key:
+                cur.execute('INSERT INTO current_states VALUES (\'a' + str(data[key]["port"]) + '\', \'' + str(data[key]["state"]) + '\')')
+                db.commit()
+
 @app.teardown_appcontext
 def close_connection(exception):
     db = getattr(Flask, '_database', None)
@@ -19,11 +30,6 @@ def hello():
 
 @app.route('/state', methods=['GET'])
 def accessor():
-    #parser = argparse.ArgumentParser()
-    #parser.add_argument('--database', type=str, dest='db')
-    #args = parser.parse_args()
-    #DATABASE = args.db[0]
-
     # get for database queries (ui)
     with sqlite3.connect(DATABASE) as db:
         cur = db.cursor()
@@ -46,9 +52,6 @@ def updater():
 
             if exists == 1:
                 cur.execute('UPDATE current_states SET state = \'' + str(request.form[key]) + '\' WHERE actuator = \'' + key + '\'')
-                db.commit()
-            else:
-                cur.execute('INSERT INTO current_states VALUES (\'' + key + '\', \'' + str(request.form[key]) + '\')')
                 db.commit()
     return "ok"
 
