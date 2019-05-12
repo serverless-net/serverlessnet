@@ -10,6 +10,7 @@ Simple topology to simulate three containers (d1, d2, d3),
     sender relayer receiver
 """
 import sys
+import json
 from mininet.net import Containernet
 from mininet.node import Controller
 from mininet.cli import CLI
@@ -29,30 +30,56 @@ info('*** Adding controller\n')
 net.addController('c0')
 info('*** Adding docker containers using serverlessnet images\n')
 
-# Add relayer
-r0 = net.addDocker('r0',
-                   dimage="serverlessnet/relayer",
-                   ports=[5000],
-                   port_bindings={5000:4999},
-                   dcmd="python -u relayer.py",
-                   publish_all_ports=True)
+# initialize config
+config = {}
+
 # Add switch and actuator                  
 nodes = {'switch': [],
         'actuator': []}
 for i in range(hostCount):
+  config['sw' + str(i)] = {
+    'port': (5000 + i),
+    'docker_image': 'serverlessnet/switch',
+    'incoming': [],
+    'outgoing': [('a' + i)],
+    'state': 'undefined'
+  }
+  config['a' + str(i)] = {
+    'port': (5000 + hostCount + i),
+    'docker_image': 'serverlessnet/actuator',
+    'incoming': [('sw' + i)],
+    'outgoing': [],
+    'state': 0
+  }   
+
   nodes['switch'].append(net.addDocker('sw' + str(i),
                         dimage='serverlessnet/switch',
                         ports=[5000], # docker host ports to be opened
                         port_bindings={5000: (5000 + i)}, # { docker host port : machine port }
-                        dcmd='python -u switch.py ' + str(5000 + hostCount + i), # pass in target actuator's port
+                        dcmd='python -u switch.py ' + 'a' + str(i), # pass in target actuator's name, port lookup by relayer
                         publish_all_ports=True))
-                  
+
   nodes['actuator'].append(net.addDocker('a' + str(i),
                         dimage='serverlessnet/actuator',
                         ports=[5000], # docker host ports to be opened
                         port_bindings={5000: (5000 + hostCount + i)}, # { docker host port : machine port }
                         dcmd='python -u actuator.py',
                         publish_all_ports=True))
+
+# Add relayer
+config['r0'] = {
+  'port': 4999,
+  'docker_image': 'serverlessnet/relayer',
+  'incoming': ['sw' + i for i in range(hostCount)],
+  'outgoing': ['a' + i for i in range(hostCount)],
+  'state': 'undefined'
+}
+r0 = net.addDocker('r0',
+                   dimage='serverlessnet/relayer',
+                   ports=[5000],
+                   port_bindings={5000:4999},
+                   dcmd='python -u relayer.py ' + json.dumps(config), # pass JSON config
+                   publish_all_ports=True)
 
 info('*** Adding mininet switches\n')
 s1 = net.addSwitch('s1')
