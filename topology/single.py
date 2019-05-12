@@ -41,13 +41,13 @@ for i in range(hostCount):
     'port': (5000 + i),
     'docker_image': 'serverlessnet/switch',
     'incoming': [],
-    'outgoing': [('a' + i)],
+    'outgoing': [('a' + str(i))],
     'state': 'undefined'
   }
   config['a' + str(i)] = {
     'port': (5000 + hostCount + i),
     'docker_image': 'serverlessnet/actuator',
-    'incoming': [('sw' + i)],
+    'incoming': [('sw' + str(i))],
     'outgoing': [],
     'state': 0
   }   
@@ -70,8 +70,8 @@ for i in range(hostCount):
 config['r0'] = {
   'port': 4999,
   'docker_image': 'serverlessnet/relayer',
-  'incoming': ['sw' + i for i in range(hostCount)],
-  'outgoing': ['a' + i for i in range(hostCount)],
+  'incoming': ['sw' + str(i) for i in range(hostCount)],
+  'outgoing': ['a' + str(i) for i in range(hostCount)],
   'state': 'undefined'
 }
 r0 = net.addDocker('r0',
