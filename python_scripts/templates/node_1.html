@@ -9,9 +9,9 @@
           <link rel="stylesheet" href="../static/node_1.css">
         </head>
         <div><input type="checkbox" class='toggle' id='box5000' checked data-toggle="toggle"></div>
-    <div class="red", id="circle5002" style="margin-bottom:20px;"></div>
+        <div class="red", id="circle5002" style="margin-bottom:20px;"></div>
         <div><input type="checkbox" class='toggle' id='box5001' checked data-toggle="toggle"></div>
-    <div class="red", id="circle5003" style="margin-bottom:20px;"></div>
+        <div class="red", id="circle5003" style="margin-bottom:20px;"></div>
 
     </body>
     <script>
@@ -26,7 +26,7 @@
                 response = JSON.parse(response);
                 console.log(response);
                 if (Object.keys(response).indexOf("a5002") >= 0){
-                    if (response["a5002"] == 1) {
+                    if (response["a5002"] == 0) {
                         $("#circle5002").attr("class", "black");
                     }
                     else {
@@ -35,7 +35,7 @@
                 }
             
                 if (Object.keys(response).indexOf("a5003") >= 0){
-                    if (response["a5003"] == 1) {
+                    if (response["a5003"] == 0) {
                         $("#circle5003").attr("class", "black");
                     }
                     else {
@@ -50,22 +50,6 @@
         });
         }
         setTimeout(get_status, interval);
-        $('#box5000').change(function() {
-          var status = $('#box5000').prop("checked");
-          $.ajax({
-                url: "/get_toggled_status",
-                type: "GET",
-                data: {status: status, port: 5000},
-            });
-        });
-        $('#box5001').change(function() {
-          var status = $('#box5001').prop("checked");
-          $.ajax({
-                url: "/get_toggled_status",
-                type: "GET",
-                data: {status: status, port: 5001},
-            });
-        });
       });
     </script>
 </html>
