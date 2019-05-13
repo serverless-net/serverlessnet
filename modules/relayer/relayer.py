@@ -113,9 +113,9 @@ def test():
 def relay():
     # Receive request from OpenWhisk
     data = json.loads(request.data.decode('utf-8'))
-    targetHost = data['target']
-    actuatorUrl = data['url']
-    colon_idx = actuatorUrl.index(':')
+    targetHost = str(data['target'])
+    actuatorUrl = str(data['url'])
+    colon_idx = actuatorUrl.index(':', 5) # skip 'http://'
     actuatorUrl = actuatorUrl[:(colon_idx + 1)] + str(config[targetHost]['port']) + actuatorUrl[(colon_idx + 1):]
 
     print(actuatorUrl)
@@ -128,7 +128,7 @@ def relay():
     print(a_res.text)
 
     # update config
-    config[targetHost]['state'] = json.loads(a_res.text)['state']
+    config[targetHost]['state'] = int(json.loads(a_res.text)['state'])
 
     print(config)
 
