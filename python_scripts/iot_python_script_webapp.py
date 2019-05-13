@@ -13,7 +13,8 @@ actuators = []
 @app.route('/', methods=['GET'])
 def node_1_get():
     # reads in config JSON file
-    data = json.load(requests.get(url='http://128.59.22.210:4001/config'))
+    data = requests.get(url='http://128.59.22.210:4001/config').text
+    data = json.loads(data)
     for key in data.keys():
         current_actuators = []
         if "sw" in key:
