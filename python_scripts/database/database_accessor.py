@@ -42,6 +42,7 @@ def accessor():
 @app.route('/', methods=['POST'])
 def updater():
     # post for database updates (used by ui api)
+    print(request.form)
     with sqlite3.connect(DATABASE) as db:
         cur = db.cursor()
         for key in request.form.keys():

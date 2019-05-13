@@ -24,7 +24,7 @@ def get_state():
 @app.route('/', methods=['POST'])
 def node_1():
     # post data to switch
-    url = 'http://172.17.0.1' + request.form['port_number']
+    url = 'http://172.17.0.1:' + request.form['port_number'] + '/flip'
     result = requests.post(url=url)
 
     return "ok"
