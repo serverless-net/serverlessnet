@@ -58,8 +58,8 @@ def node_1_get():
     for i in range(len(port_numbers)):
         for j in range(len(actuators[i])):
             html.write("""
-                if (Object.keys(response).indexOf("a""" + actuators[i][j] + """") >= 0){
-                    if (response["a""" + actuators[i][j] + """"] == 1) {
+                if (Object.keys(response).indexOf(\"""" + actuators[i][j] + """\") >= 0){
+                    if (response[\"""" + actuators[i][j] + """\"] == 0) {
                         $("#circle""" + actuators[i][j] + """").attr("class", "black");
                     }
                     else {
@@ -75,15 +75,6 @@ def node_1_get():
         });
         }
         setTimeout(get_status, interval);\n""")
-    for i in range(len(port_numbers)):
-        html.write("""        $('#box""" + port_numbers[i] + """').change(function() {
-          var status = $('#box""" + port_numbers[i] + """').prop("checked");
-          $.ajax({
-                url: "/get_toggled_status",
-                type: "GET",
-                data: {status: status, port: """ + port_numbers[i] + """},
-            });
-        });\n""")
     html.write("""      });
     </script>
 </html>""")
@@ -96,20 +87,6 @@ def node_1_get():
 def accessor():
     result = requests.get(url='http://128.59.22.210:4000/state')
     return result.text
-
-# check which one sent the toggled status
-@app.route('/get_toggled_status')
-def toggled_status():
-    current_status = request.args.get('status')
-    port_number = request.args.get('port')
-
-    if current_status == 'true':
-        # current testing
-        result = requests.post(url="http://128.59.22.210:4000/", data={'a5002': 1})
-    else:
-        result = requests.post(url="http://128.59.22.210:4000/", data={'a5002': 0})
-
-    return render_template('node_1.html')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')

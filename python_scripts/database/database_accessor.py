@@ -15,7 +15,7 @@ with open('sample_config.json') as json_file:
         data = json.load(json_file)
         for key in data.keys():
             if "a" in key:
-                cur.execute('INSERT INTO current_states VALUES (\'a' + str(data[key]["port"]) + '\', \'' + str(data[key]["state"]) + '\')')
+                cur.execute('INSERT INTO current_states VALUES (\'' + str(key) + '\', \'' + str(data[key]["state"]) + '\')')
                 db.commit()
 
 @app.teardown_appcontext
