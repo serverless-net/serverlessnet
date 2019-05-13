@@ -7,11 +7,18 @@ import os
 
 app = Flask(__name__)
 
+@app.route('/config', methods=['GET'])
+def config():
+    data = requests.get(url="http://172.17.0.1:4999/config").text
+    return data
+
 @app.route('/give_state', methods=['POST'])
 def give_state():
     data = {}
-    for key in request.form.keys():
-        data[key] = request.form[key]
+    received_data = json.loads(request.data.decode('utf-8'))
+    for key in received_data:
+        if "a" in key:
+            data[str(key)] = int(received_data[key]['state'])
 
     temp = requests.post(url="http://172.17.0.1:4000/", data=data)
     return "200"
