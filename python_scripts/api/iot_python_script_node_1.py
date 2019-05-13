@@ -15,10 +15,15 @@ def config():
 @app.route('/give_state', methods=['POST'])
 def give_state():
     data = {}
+<<<<<<< HEAD
     received_data = json.loads(request.data.decode('utf-8'))
     for key in received_data:
         if "a" in key:
             data[str(key)] = int(received_data[key]['state'])
+=======
+    for key in request.form.keys():
+        data[key] = request.form[key]
+>>>>>>> 352ec918be153173e2a1bcc1b449455a2ad0e72d
 
     temp = requests.post(url="http://172.17.0.1:4000/", data=data)
     return "200"
