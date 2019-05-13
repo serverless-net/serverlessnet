@@ -8,15 +8,15 @@ DATABASE = './actuator_states.db'
 app = Flask(__name__)
 
 # read in json file for database initialization
-with open('sample_config.json') as json_file:
-    with sqlite3.connect(DATABASE) as db:
-        cur = db.cursor()
-        cur.execute('CREATE TABLE IF NOT EXISTS current_states (actuator PRIMARY KEY, state text)')
-        data = json.load(json_file)
-        for key in data.keys():
-            if "a" in key:
-                cur.execute('INSERT INTO current_states VALUES (\'' + str(key) + '\', \'' + str(data[key]["state"]) + '\')')
-                db.commit()
+new_data = requests.get(url="http://172.17.0.1:4001/config").text
+with sqlite3.connect(DATABASE) as db:
+    cur = db.cursor()
+    cur.execute('CREATE TABLE IF NOT EXISTS current_states (actuator PRIMARY KEY, state text)')
+    data = json.loads(new_data)
+    for key in data.keys():
+        if "a" in key:
+            cur.execute('INSERT INTO current_states VALUES (\'' + str(key) + '\', \'' + str(data[key]["state"]) + '\')')
+            db.commit()
 
 @app.teardown_appcontext
 def close_connection(exception):
