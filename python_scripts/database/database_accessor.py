@@ -42,10 +42,10 @@ def accessor():
 @app.route('/', methods=['POST'])
 def updater():
     # post for database updates (used by ui api)
-    print(request.form)
     with sqlite3.connect(DATABASE) as db:
         cur = db.cursor()
         for key in request.form.keys():
+            print(request.form[key])
             cur.execute('SELECT EXISTS(SELECT * FROM current_states WHERE actuator = \'' + key + '\')')
             exists = 0
             for row in cur:
