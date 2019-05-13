@@ -54,6 +54,11 @@ def send():
     # print('Data received: ')
     # print(data)
 
+    '''
+    DONT Cast target value to port number
+    '''
+    # ow_params['target'] = config[ow_params['target']]['port']
+
     # OpenWhisk setup
     # APIHOST = subprocess.check_output('wsk -i property get --apihost', shell=True).split()[3].decode('utf-8') 
     # AUTH_KEY = subprocess.check_output('wsk -i property get --auth', shell=True).split()[2].decode('utf-8')
@@ -109,7 +114,10 @@ def relay():
     # Receive request from OpenWhisk
     data = json.loads(request.data.decode('utf-8'))
     targetHost = data['target']
-    actuatorUrl = baseUrl + ":" + str(config[targetHost]['port'])
+    actuatorUrl = data['url']
+    colon_idx = actuatorUrl.index(':')
+    actuatorUrl = actuatorUrl[:(colon_idx + 1)] + str(config[targetHost]['port']) + actuatorUrl[(colon_idx + 1):]
+
     print(actuatorUrl)
     
     apiURL = baseUrl + ':' + str(apiPort) + '/give_state'
@@ -117,13 +125,17 @@ def relay():
     # Forward action to actuator
     a_res = requests.post(url=actuatorUrl)
 
+    print(a_res.text)
+
     # update config
-    config[targetHost]["state"] = json.loads(a_res)["state"]
+    config[targetHost]['state'] = json.loads(a_res.text)['state']
+
+    print(config)
 
     # Send the update to UI API
-    # api_res = requests.post(apiURL, json=config)
+    api_res = requests.post(apiURL, json=config)
 
-    return a_res.text, 200
+    return api_res.text, 200
     
 if __name__ == '__main__':
     app.run(debug=True,host='0.0.0.0',port=5000)
