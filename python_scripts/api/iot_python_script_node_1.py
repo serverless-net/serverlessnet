@@ -12,7 +12,6 @@ def give_state():
     data = {}
     for key in request.form.keys():
         data[key] = request.form[key]
-    print(data)
 
     temp = requests.post(url="http://172.17.0.1:4000/", data=data)
     return "200"

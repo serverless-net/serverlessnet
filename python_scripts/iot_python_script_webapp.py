@@ -60,10 +60,28 @@ def node_1_get():
             html.write("""
                 if (Object.keys(response).indexOf(\"""" + actuators[i][j] + """\") >= 0){
                     if (response[\"""" + actuators[i][j] + """\"] == 0) {
+                        $("#circle""" + actuators[i][j] + """").attr("class", "red");
+                    }
+                    else if (response[\"""" + actuators[i][j] + """\"] == 1) {
                         $("#circle""" + actuators[i][j] + """").attr("class", "black");
                     }
                     else {
-                        $("#circle""" + actuators[i][j] + """").attr("class", "red");
+                        setTimeout(function() {
+                            if ($("#circle""" + actuators[i][j] + """").attr("class") == "red") {
+                                $("#circle""" + actuators[i][j] + """").attr("class", "black");
+                            }
+                            else {
+                                $("#circle""" + actuators[i][j] + """").attr("class", "red")
+                            }
+                        }, interval);
+                        setTimeout(function() {
+                            if ($("#circle""" + actuators[i][j] + """").attr("class") == "red") {
+                                $("#circle""" + actuators[i][j] + """").attr("class", "black");
+                            }
+                            else {
+                                $("#circle""" + actuators[i][j] + """").attr("class", "red");
+                            }
+                        }, interval);
                     }
                 }
             """)
@@ -103,10 +121,10 @@ def toggled_status():
     current_status = request.args.get('status')
     port_number = request.args.get('port')
 
-    if current_status == 'true':
-        result = requests.post(url="http://128.59.22.210:4001", data={'port_number': port_number})
-    else:
-        pass
+    # if current_status == 'true':
+    result = requests.post(url="http://128.59.22.210:4001", data={'port_number': port_number})
+    # else:
+    #     pass
 
     return render_template('node_1.html')
 
