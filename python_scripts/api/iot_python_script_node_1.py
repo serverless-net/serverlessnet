@@ -23,10 +23,9 @@ def get_state():
 
 @app.route('/', methods=['POST'])
 def node_1():
-    # post data to OpenWhisk
-    for key in request.form.keys():
-        if "proxy" in key:
-            requests.post(url=request.form[key])
+    # post data to switch
+    url = 'http://172.17.0.1' + request.form['port_number']
+    result = requests.post(url=url)
 
     return "ok"
 
