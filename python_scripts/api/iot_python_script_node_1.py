@@ -14,7 +14,7 @@ def give_state():
         data[key] = request.form[key]
 
     temp = requests.post(url="http://172.17.0.1:4000/", data=data)
-    return 200
+    return "200"
 
 @app.route('/get_state', methods=['GET'])
 def get_state():
