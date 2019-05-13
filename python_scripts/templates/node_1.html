@@ -8,10 +8,12 @@
           <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
           <link rel="stylesheet" href="../static/node_1.css">
         </head>
-        <div><input type="checkbox" class='toggle' id='box5000' checked data-toggle="toggle"></div>
-        <div class="red", id="circle5002" style="margin-bottom:20px;"></div>
         <div><input type="checkbox" class='toggle' id='box5001' checked data-toggle="toggle"></div>
-        <div class="red", id="circle5003" style="margin-bottom:20px;"></div>
+        <div class="red", id="circlea1" style="margin-bottom:20px;"></div>
+        <div><input type="checkbox" class='toggle' id='box5000' checked data-toggle="toggle"></div>
+        <div class="red", id="circlea0" style="margin-bottom:20px;"></div>
+        <div><input type="checkbox" class='toggle' id='box5002' checked data-toggle="toggle"></div>
+        <div class="red", id="circlea2" style="margin-bottom:20px;"></div>
 
     </body>
     <script>
@@ -25,21 +27,84 @@
                 console.log(response);
                 response = JSON.parse(response);
                 console.log(response);
-                if (Object.keys(response).indexOf("a5002") >= 0){
-                    if (response["a5002"] == 0) {
-                        $("#circle5002").attr("class", "black");
+                if (Object.keys(response).indexOf("a1") >= 0){
+                    if (response["a1"] == 0) {
+                        $("#circlea1").attr("class", "red");
+                    }
+                    else if (response["a1"] == 1) {
+                        $("#circlea1").attr("class", "black");
                     }
                     else {
-                        $("#circle5002").attr("class", "red");
+                        setTimeout(function() {
+                            if ($("#circlea1").attr("class") == "red") {
+                                $("#circlea1").attr("class", "black");
+                            }
+                            else {
+                                $("#circlea1").attr("class", "red")
+                            }
+                        }, interval);
+                        setTimeout(function() {
+                            if ($("#circlea1").attr("class") == "red") {
+                                $("#circlea1").attr("class", "black");
+                            }
+                            else {
+                                $("#circlea1").attr("class", "red");
+                            }
+                        }, interval);
                     }
                 }
             
-                if (Object.keys(response).indexOf("a5003") >= 0){
-                    if (response["a5003"] == 0) {
-                        $("#circle5003").attr("class", "black");
+                if (Object.keys(response).indexOf("a0") >= 0){
+                    if (response["a0"] == 0) {
+                        $("#circlea0").attr("class", "red");
+                    }
+                    else if (response["a0"] == 1) {
+                        $("#circlea0").attr("class", "black");
                     }
                     else {
-                        $("#circle5003").attr("class", "red");
+                        setTimeout(function() {
+                            if ($("#circlea0").attr("class") == "red") {
+                                $("#circlea0").attr("class", "black");
+                            }
+                            else {
+                                $("#circlea0").attr("class", "red")
+                            }
+                        }, interval);
+                        setTimeout(function() {
+                            if ($("#circlea0").attr("class") == "red") {
+                                $("#circlea0").attr("class", "black");
+                            }
+                            else {
+                                $("#circlea0").attr("class", "red");
+                            }
+                        }, interval);
+                    }
+                }
+            
+                if (Object.keys(response).indexOf("a2") >= 0){
+                    if (response["a2"] == 0) {
+                        $("#circlea2").attr("class", "red");
+                    }
+                    else if (response["a2"] == 1) {
+                        $("#circlea2").attr("class", "black");
+                    }
+                    else {
+                        setTimeout(function() {
+                            if ($("#circlea2").attr("class") == "red") {
+                                $("#circlea2").attr("class", "black");
+                            }
+                            else {
+                                $("#circlea2").attr("class", "red")
+                            }
+                        }, interval);
+                        setTimeout(function() {
+                            if ($("#circlea2").attr("class") == "red") {
+                                $("#circlea2").attr("class", "black");
+                            }
+                            else {
+                                $("#circlea2").attr("class", "red");
+                            }
+                        }, interval);
                     }
                 }
             
@@ -50,6 +115,30 @@
         });
         }
         setTimeout(get_status, interval);
+        $('#box5001').change(function() {
+          var status = $('#box5001').prop("checked");
+          $.ajax({
+                url: "/get_toggled_status",
+                type: "GET",
+                data: {status: status, port: 5001},
+            });
+        });
+        $('#box5000').change(function() {
+          var status = $('#box5000').prop("checked");
+          $.ajax({
+                url: "/get_toggled_status",
+                type: "GET",
+                data: {status: status, port: 5000},
+            });
+        });
+        $('#box5002').change(function() {
+          var status = $('#box5002').prop("checked");
+          $.ajax({
+                url: "/get_toggled_status",
+                type: "GET",
+                data: {status: status, port: 5002},
+            });
+        });
       });
     </script>
 </html>
