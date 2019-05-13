@@ -13,14 +13,15 @@ actuators = []
 @app.route('/', methods=['GET'])
 def node_1_get():
     # reads in config JSON file
-    with open('sample_config.json') as json_file:
-        data = json.load(json_file)
-        for key in data.keys():
-            current_actuators = []
-            if "sw" in key:
-                port_numbers.append(str(data[key]['port']))
-                current_actuators = list(map(str, data[key]['outgoing']))
-                actuators.append(current_actuators.copy())
+    data = json.load(requests.get(url='http://128.59.22.210:4001/config'))
+    for key in data.keys():
+        current_actuators = []
+        if "sw" in key:
+            port_numbers.append(str(data[key]['port']))
+            current_actuators = list(map(str, data[key]['outgoing']))
+            actuators.append(current_actuators.copy())
+
+    print(actuators)
     
     html = None
     if os.stat('templates/node_1.html').st_size == 0:
