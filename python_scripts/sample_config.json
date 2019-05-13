@@ -1,53 +1,29 @@
 {
     "r0": {
        "port": 4999,
-       "docker_image": "serverlessnet/lambda_relayer",
+       "docker_image": "serverlessnet/relayer",
        "incoming": [
-          5000,
-          5001,
-          5002,
-          5003
+          "sw0"
        ],
        "outgoing": [
-          5000,
-          5001,
-          5002,
-          5003
+          "a0"
        ],
        "state": "undefined"
     },
     "sw0": {
        "port": 5000,
-       "docker_image": "serverlessnet/lambda_switch",
+       "docker_image": "serverlessnet/switch",
        "incoming": [],
        "outgoing": [
-          5002
-       ],
-       "state": "undefined"
-    },
-    "sw1": {
-       "port": 5001,
-       "docker_image": "serverlessnet/lambda_switch",
-       "incoming": [],
-       "outgoing": [
-          5003
+          "a0"
        ],
        "state": "undefined"
     },
     "a0": {
-       "port": 5002,
-       "docker_image": "serverlessnet/lambda_actuator",
+       "port": 5001,
+       "docker_image": "serverlessnet/actuator",
        "incoming": [
-          5000
-       ],
-       "outgoing": [],
-       "state": 0
-    },
-    "a1": {
-       "port": 5003,
-       "docker_image": "serverlessnet/lambda_actuator",
-       "incoming": [
-          5001
+          "sw0"
        ],
        "outgoing": [],
        "state": 0
