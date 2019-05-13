@@ -21,8 +21,6 @@ def node_1_get():
             port_numbers.append(str(data[key]['port']))
             current_actuators = list(map(str, data[key]['outgoing']))
             actuators.append(current_actuators.copy())
-
-    print(actuators)
     
     html = None
     if os.stat('templates/node_1.html').st_size == 0:
@@ -115,6 +113,7 @@ def node_1_get():
 @app.route('/access', methods=['GET'])
 def accessor():
     result = requests.get(url='http://128.59.22.210:4000/state')
+    print(result.text)
     return result.text
 
 # check which one sent the toggled status
@@ -123,10 +122,7 @@ def toggled_status():
     current_status = request.args.get('status')
     port_number = request.args.get('port')
 
-    # if current_status == 'true':
     result = requests.post(url="http://128.59.22.210:4001", data={'port_number': port_number})
-    # else:
-    #     pass
 
     return render_template('node_1.html')
 
