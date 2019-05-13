@@ -13,6 +13,6 @@ RUN pip install -r requirements.txt
 
 COPY . /app
 
-# Containernet neglects the two lines below somehow
-ENTRYPOINT [ "python" ]
-CMD [ "relayer.py" ]
+# Containernet neglects the command below
+ENTRYPOINT [ "python", "-u", "relayer.py" ]
+# CMD [ "python", "-u", "relayer.py", "{}" ]
