@@ -46,6 +46,10 @@ def hello():
     # Status check
     return 'Hi, this relayer is running.\n', 200
 
+@app.route('/config', methods=['GET'])
+def getConfig():
+    return json.dumps(config), 200
+
 @app.route('/send', methods=['POST'])
 def send():
     # Parse POST data
