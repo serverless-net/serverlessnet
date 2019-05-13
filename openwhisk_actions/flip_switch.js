@@ -11,7 +11,8 @@ function main(params) {
         method: 'POST',
         uri: 'http://172.17.0.1:' + relayerPort + '/relay', // Directly trigger actuator to test
         body: {
-            target: 'http://172.17.0.1:' + target + '/state' // To generalize this, receive a target thorugh param, hard code for now
+            url: 'http://172.17.0.1:' + '/state', // To generalize this, receive a target thorugh param, hard code for now
+            target: target
         },
         json: true // Automatically stringifies the body to JSON
     };

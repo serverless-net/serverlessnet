@@ -66,6 +66,33 @@ for i in range(hostCount):
   net.addLink(nodes['switch'][i], s1)
   net.addLink(nodes['actuator'][i], s1)
 
+# write JSON config on disk
+config = {}
+config['r0'] = {
+  'port': 4999,
+  'docker_image': 'serverlessnet/relayer',
+  'incoming': ['sw' + str(i) for i in range(hostCount)],
+  'outgoing': ['a' + str(i) for i in range(hostCount)],
+  'state': 'undefined'
+}
+for i in range(hostCount):
+  config['sw' + str(i)] = {
+    'port': (5000 + i),
+    'docker_image': 'serverlessnet/switch',
+    'incoming': [],
+    'outgoing': [('a' + str(i))],
+    'state': 'undefined'
+  }
+  config['a' + str(i)] = {
+    'port': (5000 + hostCount + i),
+    'docker_image': 'serverlessnet/actuator',
+    'incoming': [('sw' + str(i))],
+    'outgoing': [],
+    'state': 0
+  }
+with open('../python_scripts/sample_config.json', 'w') as outjson:  
+    json.dump(config, outjson)
+
 info('*** Starting network\n')
 net.start()
 info('*** Running CLI\n')
