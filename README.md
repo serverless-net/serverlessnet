@@ -8,7 +8,7 @@ Serverless frameworks are the natural way to run LAN outside the cloud.  As IoT 
 
 ## Internal Workings
 
-![](https://github.com/serverless-net/serverlessnet/blob/master/IMG_2432.png)
+![](https://github.com/serverless-net/serverlessnet/master/IMG_2432.png)
 
 ### Containernet
 
