@@ -36,29 +36,32 @@ The SQL Database is a containerized Flask application whose purpose is to access
 
 ## High-Level Setup
 
-First, we run a setup script to initialize Containernet.  This allows us to use docker containers as hosts in the topology.  Then, we initialize any number of buttons and actuators with a program.  These button and actuator connections will be written to a json file, which will be fetched by both the database and the UI in their initializations.  
-Next, we clear all existing actions that OpenWhisk may be running at that time.  Then, we choose any of our custom actions for OpenWhisk to run.
+First, we clear all existing actions that OpenWhisk may be running at that time.  Then, we choose any of our custom actions for OpenWhisk to run.
+Next, we run a setup script to initialize Containernet.  This allows us to use docker containers as hosts in the topology.  Then, we initialize any number of buttons and actuators with a program.  These button and actuator connections will be written to a json file, which will be fetched by both the database and the UI in their initializations.  
 Last, we create the Docker containers for the database and UI API with their respective Dockerfiles, and launch the UI on our local machine.
 
 ## Issues Encountered
 
 We decided to use Containernet instead of Mininet because Containernet provides us with the capability of using Docker containers as hosts in the emulated network.  We have also decided to use OpenWhisk instead of OpenLambda.  This is because OpenLambda does not seem to be in active development, and OpenWhisk is the industry standard.  We also ran into installation issues for OpenWhisk on Debian, thus we have a native installation on Ubuntu.
 
+## Limitations
+
+Even as this system is highly scalable, it is limited by the memory on the network servicing Containernet.  Therefore, it is possible for instance, to use this in an experimental setting for a school campus network emulation, but difficult or near impossible for a whole city's network.  OpenWhisk provides functionalities to allow different machines to handle the load of the workers, or run on a separate machine entirely, which can reduce the load.
+
 ## Future Work
 
-We hope others can adopt this system to create custom IoT network initializations and message types including fanout, topics, and headers.
+We hope others can adopt this system to create custom IoT network initializations, as in the real world, devices can act both as buttons and actuators, and message types including fanout, topics, and headers.  We also hope that the containers acting as the buttons and actuators can be customized as actual device emulators.  Theoretically, multiple relayers can also be introduced into the system, which would control various computing instances used by different buttons and actuators.
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
 ### Prerequisites
 
-What things you need to install the software and how to install them
-
-```
-Give examples
-```
+On Remote Machine:
+Ubuntu
+OpenWhisk
+Docker
 
 ### Installing
 
@@ -97,10 +100,6 @@ Explain what these tests test and why
 ```
 Give an example
 ```
-
-## Deployment
-
-Add additional notes about how to deploy this on a live system
 
 ## Built With
 
