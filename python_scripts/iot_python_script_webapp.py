@@ -29,19 +29,21 @@ def node_1_get():
         html = open('templates/node_1.html', "w")
 
     html.write("""<html>
-    <body>
-        <head>
-          <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
-          <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-          <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
-          <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
-          <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
-          <link rel="stylesheet" href="../static/node_1.css">
-        </head>\n""")
+    <head>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
+        <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+        <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+        <link rel="stylesheet" href="../static/node_1.css">
+    </head>\n
+    <body>\n
+        <h3>Serverlessnet UI Demo</h3><br>
+        """)
     for i in range(len(port_numbers)):
-        html.write("""        <div><input type="checkbox" class='toggle' id='box""" + port_numbers[i] + """' checked data-toggle="toggle"></div>\n""")
+        html.write("""        <div class="row"><p class="col-sm-1" style="padding-left:25px;">Button """ + str(i) + """</p><div class="col-sm-2"><input type="checkbox" class='toggle' id='box""" + port_numbers[i] + """' data-toggle="toggle"></div>\n""")
         for j in range(len(actuators[i])):
-            html.write("""        <div class="red", id="circle""" + actuators[i][j] + """" style="margin-bottom:20px;"></div>\n""")
+            html.write("""    <div class="col-sm-9"><div class="red", id="circle""" + actuators[i][j] + """" style="margin-left:25px; margin-bottom:20px;"></div></div></div>\n""")
     html.write("""
     </body>
     <script>
@@ -59,10 +61,10 @@ def node_1_get():
         for j in range(len(actuators[i])):
             html.write("""
                 if (Object.keys(response).indexOf(\"""" + actuators[i][j] + """\") >= 0){
-                    if (response[\"""" + actuators[i][j] + """\"] == 0) {
+                    if (response[\"""" + actuators[i][j] + """\"] == 1) {
                         $("#circle""" + actuators[i][j] + """").attr("class", "red");
                     }
-                    else if (response[\"""" + actuators[i][j] + """\"] == 1) {
+                    else if (response[\"""" + actuators[i][j] + """\"] == 0) {
                         $("#circle""" + actuators[i][j] + """").attr("class", "black");
                     }
                     else {
