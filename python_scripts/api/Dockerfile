@@ -14,4 +14,4 @@ RUN pip install -r requirements.txt
 COPY . /app
 
 ENTRYPOINT ["python", "-u"]
-CMD ["api/iot_python_script_node_1.py"]
+CMD ["api/api.py"]
