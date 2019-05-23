@@ -50,7 +50,7 @@ Even as this system is highly scalable, it is limited by the memory on the netwo
 
 ## Future Work
 
-We hope others can adopt this system to create custom IoT network initializations, as in the real world, devices can act both as buttons and actuators, and message types including fanout, topics, and headers.  We also hope that the containers acting as the buttons and actuators can be customized as actual device emulators.  Theoretically, multiple relayers can also be introduced into the system, which would control various computing instances used by different buttons and actuators.
+We hope others can adopt this system to create custom IoT network initializations, as in the real world, devices can act both as buttons and actuators, and message types including fanout, topics, and headers.  We also hope that the containers acting as the buttons and actuators can be customized as actual device emulators.  Theoretically, multiple relayers can also be introduced into the system, which would control various computing instances used by different buttons and actuators.  The OpenWhisk component can be replaced with different computational networks, so exploring that realm is also a possibility.
 
 ## Getting Started
 
@@ -58,9 +58,11 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
+This program will be run on two separate machines, a remote machine for spinning up topologies and managing the workload of OpenWhisk and a local machine to interact with the UI.
+
 On Remote Machine:
 
-Ubuntu
+Ubuntu 16.04+ (all other versions untested)
 
 OpenWhisk
 
@@ -71,35 +73,51 @@ Docker
 
 A step by step series of examples that tell you how to get a development env running
 
-Say what the step will be
+Clone the repository to your local and remote machines
 
 ```
-Give the example
+git clone https://github.com/serverless-net/serverlessnet.git
 ```
-
-And repeat
-
-```
-until finished
-```
-
-End with an example of getting some data out of the system or using it for a little demo
 
 ## Running the tests
 
-Explain how to run the automated tests for this system
+To get a simple instance of the program running, there are four steps.
 
-### Break down into end to end tests
+On the remote machine:
 
-Explain what these tests test and why
+1. Run simple.py, which provides one switch connected with one actuator
 
 ```
-Give an example
+python topology/simple.py
 ```
 
-### And coding style tests
+2. Run action_chooser_script.sh, which will spin up a simple action for OpenWhisk to do
 
-Explain what these tests test and why
+DID YOU USE THIS ONE?
+
+```
+bash action_chooser_script.sh
+```
+
+3. Run run_api.sh, which builds and runs the Docker containers for database and UI API
+
+```
+bash shell/run_api.sh
+```
+
+On the local machine:
+
+4. Run UI
+
+```
+python3 iot_python_script_webapp.py
+```
+
+You should now have a single button and actuator on the screen, which you can use to control the switch and actuator.
+
+### Customization
+
+how to customize topology and actions and stuff
 
 ```
 Give an example
@@ -113,6 +131,8 @@ Give an example
 
 ## Contributing
 
+we don't need this or versioning right?
+
 Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
 
 ## Versioning
@@ -123,8 +143,6 @@ We use [SemVer](http://semver.org/) for versioning. For the versions available, 
 
 * **Jessica Huynh** (https://github.com/jessicah25)
 * **Jerry Lin** (https://github.com/)
-
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
 
 ## License
 
