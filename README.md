@@ -36,9 +36,7 @@ The SQL Database is a containerized Flask application whose purpose is to access
 
 ## High-Level Setup
 
-First, we clear all existing actions that OpenWhisk may be running at that time.  Then, we choose any of our custom actions for OpenWhisk to run.
-Next, we run a setup script to initialize Containernet.  This allows us to use docker containers as hosts in the topology.  Then, we initialize any number of buttons and actuators with a program.  These button and actuator connections will be written to a json file, which will be fetched by both the database and the UI in their initializations.  
-Last, we create the Docker containers for the database and UI API with their respective Dockerfiles, and launch the UI on our local machine.
+First, we clear all existing actions that OpenWhisk may be running at that time.  Then, we choose any of our custom actions for OpenWhisk to run.  Next, we run a setup script to initialize Containernet.  This allows us to use docker containers as hosts in the topology.  Then, we initialize any number of buttons and actuators with a program.  These button and actuator connections will be written to a json file, which will be fetched by both the database and the UI in their initializations.   Last, we create the Docker containers for the database and UI API with their respective Dockerfiles, and launch the UI on our local machine.
 
 ## Issues Encountered
 
@@ -53,8 +51,6 @@ Even as this system is highly scalable, it is limited by the memory on the netwo
 We hope others can adopt this system to create custom IoT network initializations, as in the real world, devices can act both as buttons and actuators, and message types including fanout, topics, and headers.  We also hope that the containers acting as the buttons and actuators can be customized as actual device emulators.  Theoretically, multiple relayers can also be introduced into the system, which would control various computing instances used by different buttons and actuators.  The OpenWhisk component can be replaced with different computational networks, so exploring that realm is also a possibility.
 
 ## Getting Started
-
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
 ### Prerequisites
 
@@ -71,8 +67,6 @@ Docker
 
 ### Installing
 
-A step by step series of examples that tell you how to get a development env running
-
 Clone the repository to your local and remote machines
 
 ```
@@ -85,13 +79,13 @@ To get a simple instance of the program running, there are four steps.
 
 On the remote machine:
 
-1. Run simple.py, which provides one switch connected with one actuator
+Run simple.py, which provides one switch connected with one actuator
 
 ```
 python topology/simple.py
 ```
 
-2. Run action_chooser_script.sh, which will spin up a simple action for OpenWhisk to do
+Run action_chooser_script.sh, which will spin up a simple action for OpenWhisk to do
 
 DID YOU USE THIS ONE?
 
@@ -99,7 +93,7 @@ DID YOU USE THIS ONE?
 bash action_chooser_script.sh
 ```
 
-3. Run run_api.sh, which builds and runs the Docker containers for database and UI API
+Run run_api.sh, which builds and runs the Docker containers for database and UI API
 
 ```
 bash shell/run_api.sh
@@ -107,7 +101,7 @@ bash shell/run_api.sh
 
 On the local machine:
 
-4. Run UI
+Run UI
 
 ```
 python3 iot_python_script_webapp.py
