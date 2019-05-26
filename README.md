@@ -1,6 +1,6 @@
 # Serverlessnet
 
-Serverlessnet is an emulator for rapid prototyping of serverless IoT network for experimental purposes.  Virtual topologies of IoT devices are created and connected through a serverless framework, and can be controlled through an intuitive UI.  Custom lambda functions can be executed through a connection to an OpenWhisk instance.  This system can easily be used to test the fault tolerance of an IoT network as well.
+Serverlessnet is an emulator for rapid prototyping of serverless IoT network for experimental purposes. Virtual topologies of IoT devices are created and connected through a serverless framework, and can be controlled through an intuitive UI. Custom lambda functions can be executed through a connection to an OpenWhisk instance. This system can easily be used to test the fault tolerance of an IoT network as well.
 
 ## Why Serverlessnet?
 
@@ -12,7 +12,7 @@ Serverless frameworks are the natural way to run LAN outside the cloud.  As IoT 
 
 ### Containernet
 
-Containernet consists of a controller and a Mininet switch that controls any number of buttons, actuators, and one relayer.  These buttons act as the "on and off switches" for the actuators, and the relayer uses the information from the buttons to trigger OpenWhisk tasks, the results of which will be sent to the actuators.  The actuators will then send their updated states to the UI API, as will be discussed below.
+[Containernet](https://containernet.github.io), which is a fork from [Mininet](http://mininet.org) consists of three major types of nodes: controller, switch, and host. Containernet is engineered to support running docker containers as hosts in a topology. In Serverlessnet, the topology typically includes a controller and a switch which connects any number of buttons, actuators, and one relayer, each of which packaged in a docker container. These buttons act as the "on and off switches" for the actuators, and the relayer uses the information from the buttons to trigger OpenWhisk tasks, the results of which will be sent to the actuators. The actuators will then send their updated states to the UI API, as will be discussed below.
 
 ### OpenWhisk
 
@@ -48,9 +48,9 @@ Even as this system is highly scalable, it is limited by the memory on the netwo
 
 ## Future Work
 
-We hope others can adopt this system to create custom IoT network initializations, as in the real world, devices can act both as buttons and actuators, and message types including fanout, topics, and headers.  We also hope that the containers acting as the buttons and actuators can be customized as actual device emulators.  Theoretically, multiple relayers can also be introduced into the system, which would control various computing instances used by different buttons and actuators.  The OpenWhisk component can be replaced with different computational networks, so exploring that realm is also a possibility.
+We hope others can adopt this system to create custom IoT network initializations, as in the real world, devices can act both as senders and actuators. In addition, we want to support a variety of message types including fanout, topics, headers, and others one can find in a message broker.  We also hope that the containers acting as the buttons and actuators can be customized as actual device emulators.  Theoretically, multiple relayers can also be introduced into the system, which would control various computing instances used by different buttons and actuators.  The OpenWhisk component can be replaced with different computational networks, so exploring that realm is also a possibility.
 
-## Getting Started
+## Installation
 
 ### Prerequisites
 
@@ -58,12 +58,19 @@ This program will be run on two separate machines, a remote machine for spinning
 
 On Remote Machine:
 
-Ubuntu 16.04+ (all other versions untested)
+1. Ubuntu 16.04+ (all other versions untested)
 
-OpenWhisk
+2. [Docker](https://docs.docker.com/install/linux/docker-ce/ubuntu/) 
 
-Docker
+3. [OpenWhisk](https://github.com/apache/incubator-openwhisk-devtools)
+Docker compose is the recommended implementation.
 
+4. [Wsk](https://github.com/apache/incubator-openwhisk-cli)
+
+5. [Containernet](https://containernet.github.io/#installation)
+
+6. (Recommended, optional) [Tmux](https://github.com/tmux/tmux)
+Nested Docker deployment is the recommended implementation.
 
 ### Installing
 
@@ -73,30 +80,65 @@ Clone the repository to your local and remote machines
 git clone https://github.com/serverless-net/serverlessnet.git
 ```
 
-## Running the tests
+## Get Started
 
-To get a simple instance of the program running, there are four steps.
+### Initialize Serverlessnet
 
-On the remote machine:
+There are two steps to get Serverlessnet initialized and ready to work:
 
-Run simple.py, which provides one switch connected with one actuator
+1. Launch OpenWhisk
 
-```
-python topology/simple.py
-```
-
-Run action_chooser_script.sh, which will spin up a simple action for OpenWhisk to do
-
-DID YOU USE THIS ONE?
+Since the docker compose implementation is recommended, you can simply do the following.
 
 ```
-bash action_chooser_script.sh
+(In the base directory)
+cd incubator-openwhisk-devtools/docker-compose
+make run
 ```
 
-Run run_api.sh, which builds and runs the Docker containers for database and UI API
+2. Launch Containernet
+
+You can launch Containernet by simply using the following. But in order to have more flexibility, we recommend launching Containernet in a separate window using software such as [tmux](https://github.com/tmux/tmux).
 
 ```
-bash shell/run_api.sh
+(In the base directory)
+cd serverlessnet
+sh setup.sh
+```
+
+Now you are inside Containernet. If you have `tmux` installed, you can easily navigate outside of the container and execute commands in other windows. 
+
+### Serverless Function Configuration
+
+Running functions in a serverless environment is the core feature of Serverlessnet. After OpenWhisk is up and running, it is crucial to set up the serverless function before setting up a topology. OpenWhisk supports many languages for serverless functions. In the button-switch demo, we provide a function `flip_switch` written in node.js. You can find the file under `openwhisk_actions/flip_switch.js`.
+
+To create the `flip_switch` action, run the following code. You can create any serverless function in the same way.
+
+```
+(In the serverlessnet project root directory)
+cd openwhisk_actions
+wsk -i action create flip_switch flip_switch.js
+```
+
+### Start a topology
+ 
+Now we are ready to launch a topology! If you are outside of the Containernet instance, you can now switch back in.
+
+Topology files are written in python, which specify how a network of docker containers should be deployed and linked. You can find a good example [here](https://containernet.github.io/#get-started). For the following instruciton, we are going to launch a topology with 3 pairs of buttons and actuators. We provide a `single.py` topology for your reference.
+
+```
+(Inside the Containernet instance and in /containernet directory)
+cd serverlessnet/topology
+python single.py 3
+```
+
+### Interact with Serverlessnet in UI
+
+To enable external UI, we need to fire up the api on the remote machine, which builds and runs the Docker containers for database and UI API
+
+```
+(In the base directory)
+sh shell/run_api.sh
 ```
 
 On the local machine:
@@ -107,15 +149,8 @@ Run UI
 python3 iot_python_script_webapp.py
 ```
 
-You should now have a single button and actuator on the screen, which you can use to control the switch and actuator.
+You should nsee some buttons and actuators on the screen, which you can use to control them.
 
-### Customization
-
-how to customize topology and actions and stuff
-
-```
-Give an example
-```
 
 ## Built With
 
@@ -136,13 +171,15 @@ We use [SemVer](http://semver.org/) for versioning. For the versions available, 
 ## Authors
 
 * **Jessica Huynh** (https://github.com/jessicah25)
-* **Jerry Lin** (https://github.com/)
+* **Jerry Lin** (https://github.com/lsk567)
 
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
 
 ## Acknowledgments
+
+This project is incubated in the [Internet Real-Time Lab](https://www.cs.columbia.edu/irt/) at Columbia Univerisity, under the mentorship of
 
 * Jan Janak
 * Pekka Karhula
