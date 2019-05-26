@@ -151,23 +151,6 @@ python3 iot_python_script_webapp.py
 
 You should nsee some buttons and actuators on the screen, which you can use to control them.
 
-
-## Built With
-
-* [Containernet](https://containernet.github.io/) - Mininet Network Emulator
-* [Docker](https://www.docker.com/) - Docker containers
-* [OpenWhisk](https://openwhisk.apache.org/) - Used to run lambda functions
-
-## Contributing
-
-we don't need this or versioning right?
-
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
-
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
-
 ## Authors
 
 * **Jessica Huynh** (https://github.com/jessicah25)
