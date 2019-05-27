@@ -151,14 +151,16 @@ python3 iot_python_script_webapp.py
 
 You should nsee some buttons and actuators on the screen, which you can use to control them.
 
-## Authors
+## Contact
 
-* **Jessica Huynh** (https://github.com/jessicah25)
-* **Jerry Lin** (https://github.com/lsk567)
+If you encounter any issue regarding the project, feel free to open a ticket in the repository or contact the lead developers.
+
+* [**Jessica Huynh**](https://github.com/jessicah25)
+* [**Jerry Lin**](https://github.com/lsk567)
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the MIT License.
 
 ## Acknowledgments
 
