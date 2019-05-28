@@ -67,6 +67,8 @@ Docker compose is the recommended implementation.
 
 4. [Wsk](https://github.com/apache/incubator-openwhisk-cli)
 
+For any issues with the authentication key, use the key presented in this [file](https://github.com/apache/incubator-openwhisk/blob/master/ansible/files/auth.guest)
+
 5. [Containernet](https://containernet.github.io/#installation)
 
 6. (Recommended, optional) [Tmux](https://github.com/tmux/tmux)
@@ -164,7 +166,7 @@ This project is licensed under the MIT License.
 
 ## Acknowledgments
 
-This project is incubated in the [Internet Real-Time Lab](https://www.cs.columbia.edu/irt/) at Columbia Univerisity, under the mentorship of
+This project is incubated in the [Internet Real-Time Lab](https://www.cs.columbia.edu/irt/) at Columbia University, under the mentorship of
 
 * Jan Janak
 * Pekka Karhula
