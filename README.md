@@ -67,7 +67,7 @@ Docker compose is the recommended implementation.
 
 4. [Wsk](https://github.com/apache/incubator-openwhisk-cli)
 
-For any issues with the authentication key, use the key presented in this [file](https://github.com/apache/incubator-openwhisk/blob/master/ansible/files/auth.guest)
+   - For any issues with the authentication key, use the key presented in this [file](https://github.com/apache/incubator-openwhisk/blob/master/ansible/files/auth.guest)
 
 5. [Containernet](https://containernet.github.io/#installation)
 
