@@ -126,7 +126,7 @@ wsk -i action create flip_switch flip_switch.js
  
 Now we are ready to launch a topology! If you are outside of the Containernet instance, you can now switch back in.
 
-Topology files are written in python, which specify how a network of docker containers should be deployed and linked. You can find a good example [here](https://containernet.github.io/#get-started). For the following instruciton, we are going to launch a topology with 3 pairs of buttons and actuators. We provide a `single.py` topology for your reference.
+Topology files are written in python, which specify how a network of docker containers should be deployed and linked. You can find a good example [here](https://containernet.github.io/#get-started). For the following instruction, we are going to launch a topology with 3 pairs of buttons and actuators. We provide a `single.py` topology for your reference.
 
 ```
 (Inside the Containernet instance and in /containernet directory)
@@ -151,7 +151,7 @@ Run UI
 python3 iot_python_script_webapp.py
 ```
 
-You should nsee some buttons and actuators on the screen, which you can use to control them.
+You should see some buttons and actuators on the screen, the former controlling the latter.
 
 ## Contact
 
